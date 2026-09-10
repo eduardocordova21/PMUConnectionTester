@@ -84,6 +84,16 @@ public class LiveCaptureEngineTests
         Assert.IsTrue(deviceSeries.Measurements.Count > 0);
         Assert.AreEqual(deviceSeries.Measurements.Count, deviceSeries.ReceivedFrameCount);
 
+        // GSF's own live frame-rate/missing-frame counters, read from the same MultiProtocolFrameParser
+        // instance right after it stops - the same CalculatedFrameRate the desktop app's status bar
+        // shows continuously while connected for a real Tcp/Udp device (the only transports the live
+        // controller accepts - see LiveConnectionTesterController.TryParseTransportProtocol). Empirically,
+        // GSF does not populate CalculatedFrameRate for TransportProtocol.File playback (used only by
+        // this test harness), so this asserts the value is read/plumbed through without throwing rather
+        // than asserting a specific magnitude.
+        Assert.IsTrue(deviceSeries.CalculatedFrameRate >= 0.0D);
+        Assert.IsTrue(deviceSeries.TotalMissingFrames >= 0L);
+
         PmuMeasurementSampleDto sample = deviceSeries.Measurements[0];
         Assert.AreNotEqual(0.0D, sample.Frequency);
         Assert.IsTrue(sample.Phasors.Count > 0);

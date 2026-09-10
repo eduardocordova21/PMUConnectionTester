@@ -66,6 +66,7 @@
     <Compile Include="Controllers\LiveConnectionTesterControllerTests.cs" />
     <Compile Include="Engine\Live\LiveCaptureEngineTests.cs" />
     <Compile Include="Engine\Live\LiveSessionStoreTests.cs" />
+    <Compile Include="Engine\Live\LiveSessionTests.cs" />
     <Compile Include="Infrastructure\ApiSettingsTests.cs" />
     <Compile Include="Models\FileTestRequestTests.cs" />
     <Compile Include="Models\TcpTestRequestTests.cs" />

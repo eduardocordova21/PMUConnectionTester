@@ -80,7 +80,12 @@ internal class LiveSession
         }
     }
 
-    public void Complete(DateTime captureStartTime, DateTime captureEndTime, int captureDurationSeconds)
+    public void Complete(
+        DateTime captureStartTime,
+        DateTime captureEndTime,
+        int captureDurationSeconds,
+        double calculatedFrameRate,
+        long totalMissingFrames)
     {
         lock (_gate)
         {
@@ -95,6 +100,8 @@ internal class LiveSession
                     FpsWindowSeconds = captureDurationSeconds,
                     CaptureStartTime = captureStartTime,
                     CaptureEndTime = captureEndTime,
+                    CalculatedFrameRate = calculatedFrameRate,
+                    TotalMissingFrames = totalMissingFrames,
                     Measurements = entry.Value
                 });
             }

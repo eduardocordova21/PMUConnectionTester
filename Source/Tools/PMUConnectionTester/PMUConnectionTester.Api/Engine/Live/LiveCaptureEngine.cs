@@ -146,7 +146,15 @@ internal class LiveCaptureEngine : ILiveCaptureEngine
                 return;
             }
 
-            session.Complete(captureStartTime, captureEndTime, request.CaptureDurationSeconds);
+            // Read GSF's own frame-rate/missing-frame counters right after Stop() (same pattern
+            // already used by PmuConnectionTestEngine for the older, non-live test flow) - this is
+            // the exact metric the desktop app's status bar shows continuously while connected, as
+            // opposed to the RecordDataFrame-based ReceivedFrameCount/FpsWindowSeconds average above,
+            // which is a single average across the whole fixed window and never recovers from a stall.
+            double calculatedFrameRate = parser.CalculatedFrameRate;
+            long totalMissingFrames = parser.TotalMissingFrames;
+
+            session.Complete(captureStartTime, captureEndTime, request.CaptureDurationSeconds, calculatedFrameRate, totalMissingFrames);
         }
         catch (OperationCanceledException)
         {
